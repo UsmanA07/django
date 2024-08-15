@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+<!--  <link href="{% static "css/base.css" %}" rel="stylesheet">-->
+</head>
+<body>
+  <div id="header">
+    <span class="logo">Главная</span>
+    <span class="user">
+      {% if request.user.is_authenticated %}
+        Привет {{ request.user.profile.first_name|default:request.user.username }},
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit">Выйти</button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}">Войти</a>
+      {% endif %}
+    </span>
+  </div>
+  <div id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+</html>
